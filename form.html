@@ -54,9 +54,9 @@
             justify-content: center;
         }
 
-        /* --- ULTRA COMPACT FORM & CONTAINER STYLES --- */
-        #form-container, #records-container {
-            display: none; /* Hidden until toggled/logged in */
+        /* --- ULTRA COMPACT FORM CONTAINER STYLES --- */
+        #form-container {
+            display: none; /* Hidden until logged in */
             background: #ffffff;
             padding: 12px 14px;
             border-radius: 8px;
@@ -227,22 +227,6 @@
         button[type="submit"]:hover {
             background-color: #236127;
         }
-
-        .btn-secondary {
-            width: 100%;
-            background-color: #17a2b8;
-            color: white;
-            border: none;
-            padding: 7px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 4px;
-        }
-        .btn-secondary:hover {
-            background-color: #138496;
-        }
     </style>
 </head>
 <body>
@@ -334,32 +318,13 @@
             </div>
 
             <button type="submit" id="submitBtn">Submit Practice Record</button>
-            <button type="button" class="btn-secondary" onclick="toggleRecordsView()">View All Practice Records</button>
         </form>
-    </div>
-
-    <!-- 3. RECORDS DASHBOARD & FILTER VIEW -->
-    <div id="records-container">
-        <div class="user-bar">
-            <h4 style="font-size: 12px; color: #212529;">All Practice Records</h4>
-            <button class="btn-logout" onclick="toggleRecordsView()">Back to Form</button>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 6px;">
-            <input type="text" id="searchInput" placeholder="Filter by practice, date, or text..." onkeyup="filterRecords()">
-        </div>
-
-        <div id="recordsList" style="max-height: 250px; overflow-y: auto; font-size: 11px; border: 1px solid #e9ecef; border-radius: 4px; padding: 6px; background: #f8f9fa;">
-            <p style="text-align: center; color: #6c757d; padding: 10px;">Loading records...</p>
-        </div>
     </div>
 
     <script>
         // CONFIGURATION: Replace with your actual credentials
         const GOOGLE_CLIENT_ID = "700133534894-nr0264802331kkckupgmc4mrd9tdrvp3.apps.googleusercontent.com";
-        const GOOGLE_APPS_SCRIPT_URL = https://script.google.com/macros/s/AKfycbzQtWvO1a5OnnwftND-3yRUNxuxd1BHofYCSPHTDyzdiD0ppi_18epHDhOppcRZVjBBRA/exec"";
-
-        let allRecords = [];
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQtWvO1a5OnnwftND-3yRUNxuxd1BHofYCSPHTDyzdiD0ppi_18epHDhOppcRZVjBBRA/exec";
 
         // Handle Google Auth Response
         function handleCredentialResponse(response) {
@@ -390,71 +355,9 @@
             document.getElementById('userAvatar').src = picture || "https://via.placeholder.com/24";
 
             document.getElementById('login-card').style.display = 'none';
-            document.getElementById('records-container').style.display = 'none';
             document.getElementById('form-container').style.display = 'block';
 
             setNowDateTime();
-        }
-
-        // Toggle between Form and Records Dashboard
-        function toggleRecordsView() {
-            const formContainer = document.getElementById('form-container');
-            const recordsContainer = document.getElementById('records-container');
-
-            if (recordsContainer.style.display === 'none' || recordsContainer.style.display === '') {
-                formContainer.style.display = 'none';
-                recordsContainer.style.display = 'block';
-                fetchRecords();
-            } else {
-                recordsContainer.style.display = 'none';
-                formContainer.style.display = 'block';
-            }
-        }
-
-        // Fetch records from Apps Script (requires GET support in Apps Script)
-        function fetchRecords() {
-            const recordsList = document.getElementById('recordsList');
-            recordsList.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 10px;">Loading records...</p>';
-
-            fetch(GOOGLE_APPS_SCRIPT_URL)
-                .then(response => response.json())
-                .then(data => {
-                    allRecords = data;
-                    displayRecords(allRecords);
-                })
-                .catch(error => {
-                    console.error("Error fetching records:", error);
-                    recordsList.innerHTML = '<p style="text-align: center; color: #dc3545; padding: 10px;">Failed to load records. Ensure your Apps Script handles GET requests.</p>';
-                });
-        }
-
-        // Display records list
-        function displayRecords(records) {
-            const recordsList = document.getElementById('recordsList');
-            if (!records || records.length === 0) {
-                recordsList.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 10px;">No records found.</p>';
-                return;
-            }
-
-            let html = '<table style="width: 100%; border-collapse: collapse;">';
-            records.forEach(row => {
-                html += `<tr style="border-bottom: 1px solid #dee2e6;">
-                    <td style="padding: 6px;"><b>${row.date || ''} ${row.time || ''}</b><br><span style="color: #2e7d32;"><b>${row.practices || ''}</b></span><br>${row.record || ''}</td>
-                </tr>`;
-            });
-            html += '</table>';
-            recordsList.innerHTML = html;
-        }
-
-        // Filter records
-        function filterRecords() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allRecords.filter(row => 
-                (row.practices && row.practices.toLowerCase().includes(query)) ||
-                (row.record && row.record.toLowerCase().includes(query)) ||
-                (row.date && row.date.includes(query))
-            );
-            displayRecords(filtered);
         }
 
         // Set Date and Time to Now
@@ -468,7 +371,6 @@
         function signOut() {
             localStorage.clear();
             document.getElementById('form-container').style.display = 'none';
-            document.getElementById('records-container').style.display = 'none';
             document.getElementById('login-card').style.display = 'block';
         }
 
