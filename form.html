@@ -3,104 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seeds Practice Collection Form</title>
-    <!-- Linking the external stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <title>Seeds Practice Collection</title>
+    
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* --- LOGIN CARD STYLES --- */
+        #login-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        #login-card h2 {
+            font-size: 24px;
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+
+        #login-card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- FORM CONTAINER STYLES --- */
+        #form-container {
+            display: none; /* Hidden until logged in */
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            max-width: 650px;
+            width: 100%;
+        }
+
+        .user-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border: 1px solid #e9ecef;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .user-details h4 {
+            font-size: 14px;
+            color: #212529;
+        }
+
+        .user-details p {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2e7d32;
+        }
+
+        /* --- SINGLE COLUMN CHECKBOX LIST --- */
+        .grid-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            background: #f8f9fa;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            transition: background 0.15s;
+        }
+
+        .checkbox-label:hover {
+            background: #f1f3f5;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-group-row .form-group {
+            flex: 1;
+        }
+
+        .file-upload-box {
+            border: 2px dashed #ced4da;
+            padding: 20px;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #fafafa;
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 16px;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #236127;
+        }
+    </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Seeds Practice Collection Form</h2>
-    
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <!-- 1. LOGIN VIEW -->
+    <div id="login-card">
+        <h2>Seeds Practice</h2>
+        <p>Please sign in with Google to record your practice session.</p>
+        <div class="google-btn-wrapper">
+            <div id="buttonDiv"></div>
+        </div>
+    </div>
+
+    <!-- 2. FORM VIEW (Unlocked after sign-in) -->
+    <div id="form-container">
+        <!-- User Profile Bar -->
+        <div class="user-bar">
+            <div class="user-info">
+                <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
+                <div class="user-details">
+                    <h4 id="userName">User</h4>
+                    <p id="userEmail">email@gmail.com</p>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="signOut()">Sign Out</button>
+        </div>
+
+        <h2>Seeds Practice Collection Form</h2>
         
-        <div class="section-title">What practice would you like to submit?</div>
-        <div class="grid-options">
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="3 Times Book">3 Times Book</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Gratitude">Gratitude</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Rejoices">Rejoices</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Coffee Celebration">Coffee Celebration</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Pen Story">Pen Story</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Moon and Lake Sadhana">Moon and Lake Sadhana</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Meditation">Meditation</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Yoga">Yoga</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Job seeds">Job seeds</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Relationship seeds">Relationship seeds</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Money seeds">Money seeds</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Study / Learning">Study / Learning</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="ACI 07">ACI 07</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="BDSW">BDSW</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="Chanting">Chanting</label>
-            <label class="checkbox-label"><input type="checkbox" name="practice" value="以果为道">以果为道</label>
-        </div>
+        <form id="practiceForm">
+            <div class="section-title">What practice would you like to submit?</div>
+            <div class="grid-options">
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="3 Times Book">3 Times Book</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Gratitude">Gratitude</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Rejoices">Rejoices</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Coffee Celebration">Coffee Celebration</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Pen Story">Pen Story</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Moon and Lake Sadhana">Moon and Lake Sadhana</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Meditation">Meditation</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Yoga">Yoga</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Job seeds">Job seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Relationship seeds">Relationship seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Money seeds">Money seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Study / Learning">Study / Learning</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="ACI 07">ACI 07</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="BDSW">BDSW</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Chanting">Chanting</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="以果为道">以果为道</label>
+            </div>
 
-        <div class="form-group">
-            <label for="other-practice">Other:</label>
-            <input type="text" id="other-practice" name="other_practice" placeholder="Specify other practice">
-        </div>
-
-        <div class="form-group-row">
             <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" required>
+                <label for="other-practice">Other:</label>
+                <input type="text" id="other-practice" name="other_practice" placeholder="Specify other practice">
             </div>
+
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label for="time">Time</label>
-                <input type="time" id="time" name="time" required>
+                <label for="record">Record the Practice 1</label>
+                <textarea id="record" name="record_practice_1" rows="5" required placeholder="Write down your session details or reflections..."></textarea>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="record">Record the Practice 1</label>
-            <textarea id="record" name="record_practice_1" rows="5" required placeholder="Write down your session details or reflections..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Please upload if there's documents (Max 10 GB)</label>
-            <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
-                <span id="file-label">Click to upload 1 supported file</span>
-                <input type="file" id="file-upload" name="document_upload" style="display:none;" onchange="updateFileName(this)">
+            <div class="form-group">
+                <label>Please upload if there's documents (Max 10 GB)</label>
+                <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
+                    <span id="file-label">Click to upload 1 supported file</span>
+                    <input type="file" id="file-upload" name="document_upload" style="display:none;" onchange="updateFileName(this)">
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label>Rate your happy emotions for this moment. Rejoice you did very well!</label>
-            <div class="rating-container">
-                <label class="rating-option">1<input type="radio" name="happiness_rating" value="1" required></label>
-                <label class="rating-option">2<input type="radio" name="happiness_rating" value="2"></label>
-                <label class="rating-option">3<input type="radio" name="happiness_rating" value="3"></label>
-                <label class="rating-option">4<input type="radio" name="happiness_rating" value="4"></label>
-                <label class="rating-option">5<input type="radio" name="happiness_rating" value="5" checked></label>
+            <div class="form-group">
+                <label>Rate your happy emotions for this moment. Rejoice you did very well!</label>
+                <div class="rating-container">
+                    <label class="rating-option">1<input type="radio" name="happiness_rating" value="1" required></label>
+                    <label class="rating-option">2<input type="radio" name="happiness_rating" value="2"></label>
+                    <label class="rating-option">3<input type="radio" name="happiness_rating" value="3"></label>
+                    <label class="rating-option">4<input type="radio" name="happiness_rating" value="4"></label>
+                    <label class="rating-option">5<input type="radio" name="happiness_rating" value="5" checked></label>
+                </div>
             </div>
-        </div>
 
-        <button type="submit">Submit Practice Record</button>
-    </form>
-</div>
+            <button type="submit" id="submitBtn">Submit Practice Record</button>
+        </form>
+    </div>
 
-<script>
-    // Automatically pre-fill today's current local date and time on load
-    const now = new Date();
-    const localDate = now.toLocaleDateString('sv-SE'); 
-    const localTime = now.toTimeString().substring(0, 5); 
+    <script>
+        // CONFIGURATION: Replace with your actual credentials
+        const GOOGLE_CLIENT_ID = "YOUR_CLIENT_ID.apps.googleusercontent.com";
+        const GOOGLE_APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
-    document.getElementById('date').value = localDate;
-    document.getElementById('time').value = localTime;
+        // Handle Google Auth Response
+        function handleCredentialResponse(response) {
+            const payload = parseJwt(response.credential);
+            
+            localStorage.setItem('user_email', payload.email);
+            localStorage.setItem('user_name', payload.name);
+            localStorage.setItem('user_picture', payload.picture);
+            localStorage.setItem('is_logged_in', 'true');
 
-    // Update display box text when a file is selected
-    function updateFileName(input) {
-        const label = document.getElementById('file-label');
-        if (input.files.length > 0) {
-            label.textContent = "Selected: " + input.files[0].name;
-            label.style.color = "#2e7d32";
-            label.style.fontWeight = "bold";
-        } else {
-            label.textContent = "Click to upload 1 supported file";
-            label.style.color = "inherit";
-            label.style.fontWeight = "normal";
+            showFormView(payload.name, payload.email, payload.picture);
         }
-    }
-</script>
 
+        // Decode JWT Token
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Render Form View
+        function showFormView(name, email, picture) {
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('userAvatar').src = picture || "https://via.placeholder.com/40";
+
+            document.getElementById('login-card').style.display = 'none';
+            document.getElementById('form-container').style.display = 'block';
+
+            setNowDateTime();
+        }
+
+        // Set Date and Time to Now
+        function setNowDateTime() {
+            const now = new Date();
+            document.getElementById('date').value = now.toLocaleDateString('sv-SE');
+            document.getElementById('time').value = now.toTimeString().substring(0, 5);
+        }
+
+        // Sign Out Function
+        function signOut() {
+            localStorage.clear();
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('login-card').style.display = 'block';
+        }
+
+        // File name preview
+        function updateFileName(input) {
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                label.textContent = "Selected: " + input.files[0].name;
+                label.style.color = "#2e7d32";
+                label.style.fontWeight = "bold";
+            } else {
+                label.textContent = "Click to upload 1 supported file";
+                label.style.color = "inherit";
+                label.style.fontWeight = "normal";
+            }
+        }
+
+        // On Page Load: Check Login State & Init Google Auth
+        window.onload = function () {
+            const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
+
+            if (isLoggedIn) {
+                showFormView(
+                    localStorage.getItem('user_name'),
+                    localStorage.getItem('user_email'),
+                    localStorage.getItem('user_picture')
+                );
+            } else {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("buttonDiv"),
+                    { theme: "outline", size: "large", text: "signin_with", width: 250 }
+                );
+            }
+        };
+
+        // Handle Form Submission to Google Sheet
+        document.getElementById('practiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+
+            const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
+                                           .map(cb => cb.value)
+                                           .join(', ');
+
+            const formData = {
+                email: localStorage.getItem('user_email'),
+                practices: selectedPractices,
+                otherPractice: document.getElementById('other-practice').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                record: document.getElementById('record').value,
+                rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5'
+            };
+
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            })
+            .then(() => {
+                alert("Practice record submitted successfully!");
+                document.getElementById('practiceForm').reset();
+                setNowDateTime();
+                submitBtn.textContent = "Submit Practice Record";
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error("Error!", error);
+                alert("Submission failed. Please try again.");
+                submitBtn.textContent = "Submit Practice Record";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
 </body>
 </html>
