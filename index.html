@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeds Practice - Login</title>
+    
+    <!-- Google Identity Services Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        #userProfile {
+            display: none;
+        }
+        #userProfile img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        .logout-btn {
+            margin-top: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .logout-btn:hover {
+            background-color: #e04343;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Welcome to Seeds Practice</h2>
+
+        <!-- Google Sign-In Button Container -->
+        <div id="buttonDiv" style="display: flex; justify-content: center;"></div>
+
+        <!-- Logged-in User Profile View (Hidden by default) -->
+        <div id="userProfile">
+            <img id="userPicture" src="" alt="Profile Picture">
+            <h3 id="userName"></h3>
+            <p id="userEmail" style="color: #666; font-size: 14px;"></p>
+            <button class="logout-btn" onclick="signOut()">Sign Out</button>
+        </div>
+    </div>
+
+    <script>
+        // Function triggered automatically when Google successfully authenticates the user
+        function handleCredentialResponse(response) {
+            // Decode the JWT token returned by Google
+            const responsePayload = parseJwt(response.credential);
+
+            console.log("User ID: " + responsePayload.sub);
+            console.log("Full Name: " + responsePayload.name);
+            console.log("Email: " + responsePayload.email);
+            console.log("Picture URL: " + responsePayload.picture);
+
+            // Populate UI elements with user data
+            document.getElementById('userName').innerText = responsePayload.name;
+            document.getElementById('userEmail').innerText = responsePayload.email;
+            document.getElementById('userPicture').src = responsePayload.picture;
+
+            // Switch views: hide the login button, show the profile card
+            document.getElementById('buttonDiv').style.display = 'none';
+            document.getElementById('userProfile').style.display = 'block';
+
+            // Optional: Save session state locally
+            localStorage.setItem('user_email', responsePayload.email);
+            localStorage.setItem('user_name', responsePayload.name);
+        }
+
+        // Helper function to decode the JWT token payload safely
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Sign out function to reset the UI
+        function signOut() {
+            localStorage.clear();
+            document.getElementById('userProfile').style.display = 'none';
+            document.getElementById('buttonDiv').style.display = 'flex';
+            // Re-render the Google button
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large", text: "signin_with", width: 250 }
+            );
+        }
+
+        // Initialize Google Sign-In when the page loads
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com", // <-- Replace this with your actual Google Cloud Client ID
+                callback: handleCredentialResponse
+            });
+
+            // Render the official Google Sign-In button
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large", text: "signin_with", width: 250 }
+            );
+        }
+    </script>
+</body>
+</html>
