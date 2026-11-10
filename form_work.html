@@ -299,10 +299,11 @@
             </div>
 
             <div class="form-group">
-                <label>Please upload if there's documents (Max 10 GB)</label>
+                <label>Please upload if there's documents (Max 50 MB)</label>
                 <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
                     <span id="file-label">Click to upload 1 supported file</span>
-                    <input type="file" id="file-upload" name="document_upload" style="display:none;" onchange="updateFileName(this)">
+                    <!-- Explicitly allowing Word documents (.docx, .doc), PDFs, Text, and Images -->
+                    <input type="file" id="file-upload" name="document_upload" accept=".docx,.doc,image/*,.pdf,.txt" style="display:none;" onchange="updateFileName(this)">
                 </div>
             </div>
 
@@ -322,7 +323,7 @@
     </div>
 
     <script>
-        // CONFIGURATION: Replace with your actual credentials
+        // CONFIGURATION: Credentials configured here
         const GOOGLE_CLIENT_ID = "700133534894-nr0264802331kkckupgmc4mrd9tdrvp3.apps.googleusercontent.com";
         const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQtWvO1a5OnnwftND-3yRUNxuxd1BHofYCSPHTDyzdiD0ppi_18epHDhOppcRZVjBBRA/exec";
 
@@ -410,7 +411,7 @@
             }
         };
 
-        // Handle Form Submission to Google Sheet
+        // Handle Form Submission to Google Sheet (with File Support)
         document.getElementById('practiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -418,39 +419,61 @@
             submitBtn.textContent = "Submitting...";
             submitBtn.disabled = true;
 
-            const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
-                                           .map(cb => cb.value)
-                                           .join(', ');
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
 
-            const formData = {
-                email: localStorage.getItem('user_email'),
-                practices: selectedPractices,
-                otherPractice: document.getElementById('other-practice').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                record: document.getElementById('record').value,
-                rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5'
-            };
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const base64Data = evt.target.result.split(',')[1];
+                    sendData({
+                        fileName: file.name,
+                        mimeType: file.type || 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        fileData: base64Data
+                    });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendData(null);
+            }
 
-            fetch(GOOGLE_APPS_SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            })
-            .then(() => {
-                alert("Practice record submitted successfully!");
-                document.getElementById('practiceForm').reset();
-                setNowDateTime();
-                submitBtn.textContent = "Submit Practice Record";
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
-                console.error("Error!", error);
-                alert("Submission failed. Please try again.");
-                submitBtn.textContent = "Submit Practice Record";
-                submitBtn.disabled = false;
-            });
+            function sendData(fileObject) {
+                const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
+                                               .map(cb => cb.value)
+                                               .join(', ');
+
+                const formData = {
+                    email: localStorage.getItem('user_email'),
+                    practices: selectedPractices,
+                    otherPractice: document.getElementById('other-practice').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    record: document.getElementById('record').value,
+                    rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5',
+                    file: fileObject
+                };
+
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify(formData)
+                })
+                .then(() => {
+                    alert("Practice record submitted successfully!");
+                    document.getElementById('practiceForm').reset();
+                    updateFileName(fileInput);
+                    setNowDateTime();
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error("Error!", error);
+                    alert("Submission failed. Please try again.");
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                });
+            }
         });
     </script>
 </body>
