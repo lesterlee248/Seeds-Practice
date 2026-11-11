@@ -47,10 +47,10 @@
             color: #2e7d32;
         }
 
-        /* Changed to a 2-column grid so all practices show without scrolling */
+        /* Single column list with natural height (no max-height or scrollbar) */
         .grid-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 4px;
             margin-bottom: 10px;
         }
@@ -62,7 +62,7 @@
             font-size: 11px;
             cursor: pointer;
             background: #f8f9fa;
-            padding: 4px 6px;
+            padding: 5px 8px;
             border-radius: 3px;
             border: 1px solid #e9ecef;
         }
