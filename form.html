@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seeds Practice Collection</title>
     
-    <!-- Google Identity Services SDK -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
     <style>
         * {
             box-sizing: border-box;
@@ -23,116 +20,41 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 8px;
+            padding: 16px;
         }
 
-        /* --- LOGIN CARD STYLES --- */
-        #login-card {
-            background: #ffffff;
-            padding: 20px 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            text-align: center;
-            max-width: 360px;
-            width: 100%;
-        }
-
-        #login-card h2 {
-            font-size: 18px;
-            color: #2e7d32;
-            margin-bottom: 4px;
-        }
-
-        #login-card p {
-            color: #666;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-
-        .google-btn-wrapper {
-            display: flex;
-            justify-content: center;
-        }
-
-        /* --- ULTRA COMPACT FORM CONTAINER STYLES --- */
         #form-container {
-            display: none; /* Hidden until logged in */
             background: #ffffff;
-            padding: 12px 14px;
+            padding: 16px 18px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             max-width: 450px;
             width: 100%;
         }
 
-        .user-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f8f9fa;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            border: 1px solid #e9ecef;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .user-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-        }
-
-        .user-details h4 {
-            font-size: 11px;
-            color: #212529;
-            line-height: 1.1;
-        }
-
-        .user-details p {
-            font-size: 10px;
-            color: #6c757d;
-            line-height: 1.1;
-        }
-
-        .btn-logout {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 2px 6px;
-            font-size: 11px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .btn-logout:hover {
-            background: #c82333;
-        }
-
         h2.form-title {
-            font-size: 15px;
-            margin-bottom: 6px;
-            color: #212529;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #2e7d32;
+            text-align: center;
+            font-weight: 700;
         }
 
         .section-title {
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: #2e7d32;
         }
 
-        /* --- COMPACT CHECKBOX LIST --- */
         .grid-options {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            margin-bottom: 8px;
+            gap: 3px;
+            margin-bottom: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
         }
 
         .checkbox-label {
@@ -142,35 +64,43 @@
             font-size: 12px;
             cursor: pointer;
             background: #f8f9fa;
-            padding: 2px 6px;
+            padding: 4px 6px;
             border-radius: 3px;
             border: 1px solid #e9ecef;
         }
 
         .checkbox-label input {
-            transform: scale(0.85);
+            transform: scale(0.9);
         }
 
         .form-group {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .form-group label {
             display: block;
             font-size: 11px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
+            color: #495057;
         }
 
         .form-group input[type="text"],
+        .form-group input[type="email"],
         .form-group input[type="date"],
         .form-group input[type="time"],
         .form-group textarea {
             width: 100%;
-            padding: 4px 6px;
+            padding: 6px 8px;
             border: 1px solid #ced4da;
-            border-radius: 3px;
+            border-radius: 4px;
             font-size: 12px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
         }
 
         .form-group-row {
@@ -183,32 +113,37 @@
         }
 
         .file-upload-box {
-            border: 1px dashed #ced4da;
-            padding: 6px;
+            border: 1px dashed #2e7d32;
+            padding: 8px;
             text-align: center;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
-            background-color: #fafafa;
+            background-color: #f4fdf4;
             font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .file-upload-box:hover {
+            background-color: #e8f5e9;
         }
 
         .rating-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 6px;
+            border-radius: 4px;
+            justify-content: space-around;
         }
 
         .rating-option {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1px;
+            gap: 2px;
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-        }
-
-        .rating-option input {
-            transform: scale(0.85);
         }
 
         button[type="submit"] {
@@ -216,47 +151,42 @@
             background-color: #2e7d32;
             color: white;
             border: none;
-            padding: 7px;
+            padding: 9px;
             border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 4px;
+            margin-top: 6px;
+            transition: background 0.2s;
         }
 
         button[type="submit"]:hover {
             background-color: #236127;
         }
+
+        button[type="submit"]:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN VIEW -->
-    <div id="login-card">
-        <h2>Seeds Practice</h2>
-        <p>Please sign in with Google to record your practice session.</p>
-        <div class="google-btn-wrapper">
-            <div id="buttonDiv"></div>
-        </div>
-    </div>
-
-    <!-- 2. FORM VIEW (Unlocked after sign-in) -->
     <div id="form-container">
-        <!-- User Profile Bar -->
-        <div class="user-bar">
-            <div class="user-info">
-                <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
-                <div class="user-details">
-                    <h4 id="userName">User</h4>
-                    <p id="userEmail">email@gmail.com</p>
-                </div>
-            </div>
-            <button class="btn-logout" onclick="signOut()">Sign Out</button>
-        </div>
-
         <h2 class="form-title">Seeds Practice Collection Form</h2>
         
         <form id="practiceForm">
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="user-name">Your Name</label>
+                    <input type="text" id="user-name" name="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Your Email</label>
+                    <input type="email" id="user-email" name="email" required placeholder="user@example.com">
+                </div>
+            </div>
+
             <div class="section-title">What practice would you like to submit?</div>
             <div class="grid-options">
                 <label class="checkbox-label"><input type="checkbox" name="practice" value="3 Times Book">3 Times Book</label>
@@ -278,7 +208,7 @@
             </div>
 
             <div class="form-group">
-                <label for="other-practice">Other:</label>
+                <label for="other-practice">Other Practice:</label>
                 <input type="text" id="other-practice" name="other_practice" placeholder="Specify other practice">
             </div>
 
@@ -294,21 +224,20 @@
             </div>
 
             <div class="form-group">
-                <label for="record">Record the Practice 1</label>
-                <textarea id="record" name="record_practice_1" rows="2" required placeholder="Write down your session details or reflections..."></textarea>
+                <label for="record">Record the Practice</label>
+                <textarea id="record" name="record_practice_1" rows="3" required placeholder="Write down your session details or reflections..."></textarea>
             </div>
 
             <div class="form-group">
-                <label>Please upload if there's documents (Max 50 MB)</label>
+                <label>Upload Document (Optional, Max 50 MB)</label>
                 <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
-                    <span id="file-label">Click to upload 1 supported file</span>
-                    <!-- Explicitly allowing Word documents (.docx, .doc), PDFs, Text, and Images -->
+                    <span id="file-label">Click to select document or image</span>
                     <input type="file" id="file-upload" name="document_upload" accept=".docx,.doc,image/*,.pdf,.txt" style="display:none;" onchange="updateFileName(this)">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Rate your happy emotions for this moment. Rejoice you did very well!</label>
+                <label>Rate your happy emotions for this moment:</label>
                 <div class="rating-container">
                     <label class="rating-option">1<input type="radio" name="happiness_rating" value="1" required></label>
                     <label class="rating-option">2<input type="radio" name="happiness_rating" value="2"></label>
@@ -323,59 +252,14 @@
     </div>
 
     <script>
-        // CONFIGURATION: Credentials configured here
-        const GOOGLE_CLIENT_ID = "700133534894-nr0264802331kkckupgmc4mrd9tdrvp3.apps.googleusercontent.com";
         const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQtWvO1a5OnnwftND-3yRUNxuxd1BHofYCSPHTDyzdiD0ppi_18epHDhOppcRZVjBBRA/exec";
 
-        // Handle Google Auth Response
-        function handleCredentialResponse(response) {
-            const payload = parseJwt(response.credential);
-            
-            localStorage.setItem('user_email', payload.email);
-            localStorage.setItem('user_name', payload.name);
-            localStorage.setItem('user_picture', payload.picture);
-            localStorage.setItem('is_logged_in', 'true');
-
-            showFormView(payload.name, payload.email, payload.picture);
-        }
-
-        // Decode JWT Token
-        function parseJwt(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-
-        // Render Form View
-        function showFormView(name, email, picture) {
-            document.getElementById('userName').textContent = name;
-            document.getElementById('userEmail').textContent = email;
-            document.getElementById('userAvatar').src = picture || "https://via.placeholder.com/24";
-
-            document.getElementById('login-card').style.display = 'none';
-            document.getElementById('form-container').style.display = 'block';
-
-            setNowDateTime();
-        }
-
-        // Set Date and Time to Now
         function setNowDateTime() {
             const now = new Date();
             document.getElementById('date').value = now.toLocaleDateString('sv-SE');
             document.getElementById('time').value = now.toTimeString().substring(0, 5);
         }
 
-        // Sign Out Function
-        function signOut() {
-            localStorage.clear();
-            document.getElementById('form-container').style.display = 'none';
-            document.getElementById('login-card').style.display = 'block';
-        }
-
-        // File name preview
         function updateFileName(input) {
             const label = document.getElementById('file-label');
             if (input.files.length > 0) {
@@ -383,35 +267,16 @@
                 label.style.color = "#2e7d32";
                 label.style.fontWeight = "bold";
             } else {
-                label.textContent = "Click to upload 1 supported file";
+                label.textContent = "Click to select document or image";
                 label.style.color = "inherit";
                 label.style.fontWeight = "normal";
             }
         }
 
-        // On Page Load: Check Login State & Init Google Auth
-        window.onload = function () {
-            const isLoggedIn = localStorage.getItem('is_logged_in') === 'true';
-
-            if (isLoggedIn) {
-                showFormView(
-                    localStorage.getItem('user_name'),
-                    localStorage.getItem('user_email'),
-                    localStorage.getItem('user_picture')
-                );
-            } else {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: handleCredentialResponse
-                });
-                google.accounts.id.renderButton(
-                    document.getElementById("buttonDiv"),
-                    { theme: "outline", size: "large", text: "signin_with", width: 220 }
-                );
-            }
+        window.onload = function() {
+            setNowDateTime();
         };
 
-        // Handle Form Submission to Google Sheet (with File Support)
         document.getElementById('practiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -428,7 +293,7 @@
                     const base64Data = evt.target.result.split(',')[1];
                     sendData({
                         fileName: file.name,
-                        mimeType: file.type || 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        mimeType: file.type || 'application/octet-stream',
                         fileData: base64Data
                     });
                 };
@@ -443,7 +308,8 @@
                                                .join(', ');
 
                 const formData = {
-                    email: localStorage.getItem('user_email'),
+                    name: document.getElementById('user-name').value,
+                    email: document.getElementById('user-email').value,
                     practices: selectedPractices,
                     otherPractice: document.getElementById('other-practice').value,
                     date: document.getElementById('date').value,
