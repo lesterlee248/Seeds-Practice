@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeds Practice Collection</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        #form-container {
+            background: #ffffff;
+            padding: 16px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            max-width: 480px;
+            width: 100%;
+        }
+
+        h2.form-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #2e7d32;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #2e7d32;
+        }
+
+        .grid-options {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            background: #f8f9fa;
+            padding: 5px 8px;
+            border-radius: 3px;
+            border: 1px solid #e9ecef;
+        }
+
+        .checkbox-label input {
+            transform: scale(0.9);
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: #495057;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group textarea {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        .form-group-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .form-group-row .form-group {
+            flex: 1;
+        }
+
+        .file-upload-box {
+            border: 1px dashed #2e7d32;
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #f4fdf4;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .file-upload-box:hover {
+            background-color: #e8f5e9;
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 6px;
+            border-radius: 4px;
+            justify-content: space-around;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 9px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #236127;
+        }
+
+        button[type="submit"]:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="form-container">
+        <h2 class="form-title">Seeds Practice Collection Form</h2>
+        
+        <form id="practiceForm">
+            <div class="section-title">What practice would you like to submit?</div>
+            <div class="grid-options">
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="3 Times Book">3 Times Book</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Gratitude">Gratitude</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Rejoices">Rejoices</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Coffee Celebration">Coffee Celebration</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Pen Story">Pen Story</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Moon and Lake Sadhana">Moon and Lake Sadhana</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Meditation">Meditation</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Yoga">Yoga</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Job seeds">Job seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Relationship seeds">Relationship seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Money seeds">Money seeds</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Study / Learning">Study / Learning</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="ACI 07">ACI 07</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="BDSW">BDSW</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="Chanting">Chanting</label>
+                <label class="checkbox-label"><input type="checkbox" name="practice" value="以果为道">以果为道</label>
+            </div>
+
+            <div class="form-group">
+                <label for="other-practice">Other Practice:</label>
+                <input type="text" id="other-practice" name="other_practice" placeholder="Specify other practice">
+            </div>
+
+            <div class="form-group-row">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="record">Record the Practice</label>
+                <textarea id="record" name="record_practice_1" rows="3" required placeholder="Write down your session details or reflections..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Document (Optional, Max 50 MB)</label>
+                <div class="file-upload-box" onclick="document.getElementById('file-upload').click()">
+                    <span id="file-label">Click to select document or image</span>
+                    <input type="file" id="file-upload" name="document_upload" accept=".docx,.doc,image/*,.pdf,.txt" style="display:none;" onchange="updateFileName(this)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Rate your happy emotions for this moment:</label>
+                <div class="rating-container">
+                    <label class="rating-option">1<input type="radio" name="happiness_rating" value="1" required></label>
+                    <label class="rating-option">2<input type="radio" name="happiness_rating" value="2"></label>
+                    <label class="rating-option">3<input type="radio" name="happiness_rating" value="3"></label>
+                    <label class="rating-option">4<input type="radio" name="happiness_rating" value="4"></label>
+                    <label class="rating-option">5<input type="radio" name="happiness_rating" value="5" checked></label>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit Practice Record</button>
+        </form>
+    </div>
+
+    <script>
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQtWvO1a5OnnwftND-3yRUNxuxd1BHofYCSPHTDyzdiD0ppi_18epHDhOppcRZVjBBRA/exec";
+
+        function setNowDateTime() {
+            const now = new Date();
+            document.getElementById('date').value = now.toLocaleDateString('sv-SE');
+            document.getElementById('time').value = now.toTimeString().substring(0, 5);
+        }
+
+        function updateFileName(input) {
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                label.textContent = "Selected: " + input.files[0].name;
+                label.style.color = "#2e7d32";
+                label.style.fontWeight = "bold";
+            } else {
+                label.textContent = "Click to select document or image";
+                label.style.color = "inherit";
+                label.style.fontWeight = "normal";
+            }
+        }
+
+        window.onload = function() {
+            setNowDateTime();
+        };
+
+        document.getElementById('practiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const base64Data = evt.target.result.split(',')[1];
+                    sendData({
+                        fileName: file.name,
+                        mimeType: file.type || 'application/octet-stream',
+                        fileData: base64Data
+                    });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendData(null);
+            }
+
+            function sendData(fileObject) {
+                const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
+                                               .map(cb => cb.value)
+                                               .join(', ');
+
+                const formData = {
+                    userEmail: window.userEmail || "",
+                    practices: selectedPractices,
+                    otherPractice: document.getElementById('other-practice').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    record: document.getElementById('record').value,
+                    rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5',
+                    file: fileObject
+                };
+
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify(formData)
+                })
+                .then(() => {
+                    alert("Practice record submitted successfully!");
+                    document.getElementById('practiceForm').reset();
+                    updateFileName(fileInput);
+                    setNowDateTime();
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error("Error!", error);
+                    alert("Submission failed. Please try again.");
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
