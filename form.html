@@ -86,7 +86,6 @@
         }
 
         .form-group input[type="text"],
-        .form-group input[type="email"],
         .form-group input[type="date"],
         .form-group input[type="time"],
         .form-group textarea {
@@ -176,17 +175,6 @@
         <h2 class="form-title">Seeds Practice Collection Form</h2>
         
         <form id="practiceForm">
-            <div class="form-group-row">
-                <div class="form-group">
-                    <label for="user-name">Your Name</label>
-                    <input type="text" id="user-name" name="name" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label for="user-email">Your Email</label>
-                    <input type="email" id="user-email" name="email" required placeholder="user@example.com">
-                </div>
-            </div>
-
             <div class="section-title">What practice would you like to submit?</div>
             <div class="grid-options">
                 <label class="checkbox-label"><input type="checkbox" name="practice" value="3 Times Book">3 Times Book</label>
@@ -308,8 +296,6 @@
                                                .join(', ');
 
                 const formData = {
-                    name: document.getElementById('user-name').value,
-                    email: document.getElementById('user-email').value,
                     practices: selectedPractices,
                     otherPractice: document.getElementById('other-practice').value,
                     date: document.getElementById('date').value,
