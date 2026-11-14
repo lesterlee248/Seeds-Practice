@@ -1,1 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose</title>
+    <!-- Load Tailwind CSS for clean, responsive utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font for crisp, modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4 sm:p-6 antialiased selection:bg-emerald-500 selection:text-white">
 
+    <!-- Main Centered Card Container -->
+    <main class="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-slate-200/60 dark:shadow-none border border-slate-200/80 dark:border-slate-800 p-6 sm:p-10 transition-all">
+        
+        <!-- Personalized Welcome Banner at Top -->
+        <div class="mb-6 pb-5 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/50">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+                <p id="welcomeGreeting" class="text-sm sm:text-base font-semibold text-emerald-900 dark:text-emerald-200">
+                    Welcome <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300">Loading...</span>
+                </p>
+            </div>
+            <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
+                Seeds Planting Portal
+            </span>
+        </div>
+
+        <!-- Header Section with Clear Visual Hierarchy -->
+        <header class="text-center mb-8 sm:mb-10">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mb-4 border border-emerald-100 dark:border-emerald-900/50">
+                <!-- Minimalist Compass / Choice Icon -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Choose an Action
+            </h1>
+            <p class="mt-2.5 text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                Select whether you would like to submit a new entry or browse existing records.
+            </p>
+        </header>
+
+        <!-- Action Buttons Grid (Add on the left, View on the right, side-by-side on sm+ screens) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            
+            <!-- ADD Action Card / Button (Left) -> Navigates to form.html -->
+            <a href="form.html" 
+               aria-label="Add a new record"
+               class="group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-emerald-600 dark:bg-emerald-600 border-2 border-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:border-emerald-700 dark:hover:border-emerald-500 text-white transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-600/25 focus:outline-none focus:ring-4 focus:ring-emerald-500/40">
+                
+                <div>
+                    <!-- Icon Badge -->
+                    <div class="w-12 h-12 rounded-xl bg-white/15 text-white flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-white group-hover:text-emerald-600 transition-all duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    
+                    <!-- Action Title & Description -->
+                    <h2 class="text-xl font-bold text-white">
+                        Add
+                    </h2>
+                    <p class="mt-1.5 text-sm text-emerald-100 leading-relaxed">
+                        Create and submit a new record using the entry form.
+                    </p>
+                </div>
+
+                <!-- Action Indicator Footer -->
+                <div class="mt-6 pt-4 border-t border-white/15 flex items-center justify-between text-sm font-semibold text-white">
+                    <span>Open form.html</span>
+                    <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- VIEW Action Card / Button (Right) -> Navigates to view.html -->
+            <a href="view.html" 
+               aria-label="View existing records"
+               class="group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border-2 border-slate-200 dark:border-slate-700/80 hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-50/40 dark:hover:bg-teal-950/30 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-500/10 focus:outline-none focus:ring-4 focus:ring-teal-500/20">
+                
+                <div>
+                    <!-- Icon Badge -->
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-teal-600 group-hover:text-white transition-all duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </div>
+                    
+                    <!-- Action Title & Description -->
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                        View
+                    </h2>
+                    <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Browse, search, and inspect all saved entries in the directory.
+                    </p>
+                </div>
+
+                <!-- Action Indicator Footer -->
+                <div class="mt-6 pt-4 border-t border-slate-200/70 dark:border-slate-700/70 flex items-center justify-between text-sm font-semibold text-teal-600 dark:text-teal-400">
+                    <span>Open view.html</span>
+                    <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- User Identity Resolution Script (Firebase Auth + URL/Storage Fallback) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const userDisplayEl = document.getElementById('userEmailDisplay');
+
+        /**
+         * Updates the welcome header with the resolved email.
+         * @param {string} email
+         */
+        function setWelcomeUser(email) {
+            if (email && email.trim()) {
+                userDisplayEl.textContent = email.trim();
+            }
+        }
+
+        /**
+         * Checks URL query parameters or all possible browser storage keys for the logged-in email.
+         */
+        function resolveFallbackUser() {
+            try {
+                // 1. Check URL parameters first (e.g. ?email=user@gmail.com)
+                const params = new URLSearchParams(window.location.search);
+                const paramEmail = params.get('email') || params.get('user') || params.get('name');
+                if (paramEmail) {
+                    setWelcomeUser(paramEmail);
+                    return true;
+                }
+
+                // 2. Check localStorage / sessionStorage for any stored keys
+                // Adding new script here: scans all keys in storage to find anything resembling an email
+                const allStorageKeys = Object.keys(window.localStorage || {}).concat(Object.keys(window.sessionStorage || {}));
+                for (const key of allStorageKeys) {
+                    const val = window.localStorage?.getItem(key) || window.sessionStorage?.getItem(key);
+                    if (val) {
+                        if (val.includes('@')) {
+                            setWelcomeUser(val);
+                            return true;
+                        }
+                        try {
+                            const parsed = JSON.parse(val);
+                            const found = parsed?.email || parsed?.userEmail || parsed?.user || parsed?.name;
+                            if (found && typeof found === 'string' && found.includes('@')) {
+                                setWelcomeUser(found);
+                                return true;
+                            }
+                        } catch (e) {
+                            // ignore parse error
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn('Fallback email lookup skipped:', err);
+            }
+            return false;
+        }
+
+        // Try loading from URL/Storage immediately
+        const foundFallback = resolveFallbackUser();
+
+        // Check Firebase Auth if environment configuration is present
+        async function initFirebaseUser() {
+            try {
+                if (typeof __firebase_config === 'undefined') {
+                    if (!foundFallback) {
+                        userDisplayEl.textContent = "Guest";
+                    }
+                    return;
+                }
+
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    // Adding new script here: Grabs email from Firebase Auth session
+                    if (user) {
+                        if (user.email) {
+                            setWelcomeUser(user.email);
+                        } else if (user.displayName) {
+                            setWelcomeUser(user.displayName);
+                        } else if (!foundFallback) {
+                            setWelcomeUser(user.uid ? "User (" + user.uid.substring(0, 5) + ")" : "User");
+                        }
+                    } else if (!foundFallback) {
+                        userDisplayEl.textContent = "Guest";
+                    }
+                });
+            } catch (err) {
+                console.warn('Firebase Auth check skipped or unavailable:', err);
+                if (!foundFallback) {
+                    userDisplayEl.textContent = "Guest";
+                }
+            }
+        }
+
+        initFirebaseUser();
+    </script>
+
+</body>
+</html>
