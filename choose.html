@@ -20,7 +20,7 @@
             <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/50">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
                 <p id="welcomeGreeting" class="text-sm sm:text-base font-semibold text-emerald-900 dark:text-emerald-200">
-                    Welcome <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300">Loading...</span>
+                    Welcome, <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300">Gardener</span>
                 </p>
             </div>
             <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
@@ -49,6 +49,7 @@
             
             <!-- ADD Action Card / Button (Left) -> Navigates to form.html -->
             <a href="form.html" 
+               id="addLink"
                aria-label="Add a new record"
                class="group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-emerald-600 dark:bg-emerald-600 border-2 border-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:border-emerald-700 dark:hover:border-emerald-500 text-white transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-600/25 focus:outline-none focus:ring-4 focus:ring-emerald-500/40">
                 
@@ -121,68 +122,60 @@
         const userDisplayEl = document.getElementById('userEmailDisplay');
 
         /**
-         * Updates the welcome header with the resolved email.
-         * @param {string} email
+         * Updates the welcome header with the resolved email or display name.
+         * @param {string} identifier
          */
-        function setWelcomeUser(email) {
-            if (email && email.trim()) {
-                userDisplayEl.textContent = email.trim();
+        function setWelcomeUser(identifier) {
+            if (identifier && identifier.trim()) {
+                const cleaned = identifier.trim();
+                userDisplayEl.textContent = cleaned;
+                
+                // Adding new script here: Save email to localStorage so form.html recognizes the login session
+                localStorage.setItem("userEmail", cleaned);
             }
         }
 
         /**
-         * Checks URL query parameters or all possible browser storage keys for the logged-in email.
+         * Checks URL query parameters (?email=... or ?user=...) or common browser storage keys.
          */
         function resolveFallbackUser() {
             try {
-                // 1. Check URL parameters first (e.g. ?email=user@gmail.com)
                 const params = new URLSearchParams(window.location.search);
-                const paramEmail = params.get('email') || params.get('user') || params.get('name');
-                if (paramEmail) {
-                    setWelcomeUser(paramEmail);
-                    return true;
+                const paramUser = params.get('email') || params.get('user') || params.get('name');
+                if (paramUser) {
+                    setWelcomeUser(paramUser);
+                    return;
                 }
 
-                // 2. Check localStorage / sessionStorage for any stored keys
-                // Adding new script here: scans all keys in storage to find anything resembling an email
-                const allStorageKeys = Object.keys(window.localStorage || {}).concat(Object.keys(window.sessionStorage || {}));
-                for (const key of allStorageKeys) {
+                const storedKeys = ['userEmail', 'email', 'username', 'userName', 'currentUser'];
+                for (const key of storedKeys) {
                     const val = window.localStorage?.getItem(key) || window.sessionStorage?.getItem(key);
                     if (val) {
-                        if (val.includes('@')) {
-                            setWelcomeUser(val);
-                            return true;
-                        }
                         try {
                             const parsed = JSON.parse(val);
-                            const found = parsed?.email || parsed?.userEmail || parsed?.user || parsed?.name;
-                            if (found && typeof found === 'string' && found.includes('@')) {
-                                setWelcomeUser(found);
-                                return true;
+                            const extracted = parsed?.email || parsed?.displayName || parsed?.name || (typeof parsed === 'string' ? parsed : null);
+                            if (extracted) {
+                                setWelcomeUser(extracted);
+                                return;
                             }
-                        } catch (e) {
-                            // ignore parse error
+                        } catch {
+                            setWelcomeUser(val);
+                            return;
                         }
                     }
                 }
             } catch (err) {
-                console.warn('Fallback email lookup skipped:', err);
+                console.warn('Fallback user lookup skipped:', err);
             }
-            return false;
         }
 
-        // Try loading from URL/Storage immediately
-        const foundFallback = resolveFallbackUser();
+        // Apply any immediately available fallback identity first
+        resolveFallbackUser();
 
         // Check Firebase Auth if environment configuration is present
         async function initFirebaseUser() {
             try {
-                if (typeof __firebase_config === 'undefined') {
-                    if (!foundFallback) {
-                        userDisplayEl.textContent = "Guest";
-                    }
-                    return;
-                }
+                if (typeof __firebase_config === 'undefined') return;
 
                 const firebaseConfig = JSON.parse(__firebase_config);
                 const app = initializeApp(firebaseConfig);
@@ -195,28 +188,28 @@
                 }
 
                 onAuthStateChanged(auth, (user) => {
-                    // Adding new script here: Grabs email from Firebase Auth session
                     if (user) {
-                        if (user.email) {
-                            setWelcomeUser(user.email);
-                        } else if (user.displayName) {
-                            setWelcomeUser(user.displayName);
-                        } else if (!foundFallback) {
-                            setWelcomeUser(user.uid ? "User (" + user.uid.substring(0, 5) + ")" : "User");
+                        const label = user.email || user.displayName;
+                        if (label) {
+                            setWelcomeUser(label);
                         }
-                    } else if (!foundFallback) {
-                        userDisplayEl.textContent = "Guest";
                     }
                 });
             } catch (err) {
                 console.warn('Firebase Auth check skipped or unavailable:', err);
-                if (!foundFallback) {
-                    userDisplayEl.textContent = "Guest";
-                }
             }
         }
 
         initFirebaseUser();
+
+        // Adding new script here: Dynamically attach email parameter to the Add link for seamless form access
+        document.getElementById('addLink').addEventListener('click', function(e) {
+            const currentEmail = localStorage.getItem("userEmail") || userDisplayEl.textContent;
+            if (currentEmail && currentEmail.includes('@')) {
+                e.preventDefault();
+                window.location.href = `form.html?email=${encodeURIComponent(currentEmail)}`;
+            }
+        });
     </script>
 
 </body>
