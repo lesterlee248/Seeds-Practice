@@ -20,8 +20,7 @@
             <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/50">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
                 <p id="welcomeGreeting" class="text-sm sm:text-base font-semibold text-emerald-900 dark:text-emerald-200">
-                    <!-- Removed "Gardener" so it starts blank until the logged-in email loads -->
-                    Welcome <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300"></span>
+                    Welcome <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300">Loading...</span>
                 </p>
             </div>
             <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
@@ -132,48 +131,58 @@
         }
 
         /**
-         * Checks URL query parameters (?email=...) or browser storage keys for the logged-in email.
+         * Checks URL query parameters or all possible browser storage keys for the logged-in email.
          */
         function resolveFallbackUser() {
             try {
+                // 1. Check URL parameters first (e.g. ?email=user@gmail.com)
                 const params = new URLSearchParams(window.location.search);
-                const paramEmail = params.get('email') || params.get('user');
+                const paramEmail = params.get('email') || params.get('user') || params.get('name');
                 if (paramEmail) {
                     setWelcomeUser(paramEmail);
-                    return;
+                    return true;
                 }
 
-                const storedKeys = ['userEmail', 'email', 'currentUser'];
-                for (const key of storedKeys) {
+                // 2. Check localStorage / sessionStorage for any stored keys
+                // Adding new script here: scans all keys in storage to find anything resembling an email
+                const allStorageKeys = Object.keys(window.localStorage || {}).concat(Object.keys(window.sessionStorage || {}));
+                for (const key of allStorageKeys) {
                     const val = window.localStorage?.getItem(key) || window.sessionStorage?.getItem(key);
                     if (val) {
+                        if (val.includes('@')) {
+                            setWelcomeUser(val);
+                            return true;
+                        }
                         try {
                             const parsed = JSON.parse(val);
-                            const extractedEmail = parsed?.email || (typeof parsed === 'string' && parsed.includes('@') ? parsed : null);
-                            if (extractedEmail) {
-                                setWelcomeUser(extractedEmail);
-                                return;
+                            const found = parsed?.email || parsed?.userEmail || parsed?.user || parsed?.name;
+                            if (found && typeof found === 'string' && found.includes('@')) {
+                                setWelcomeUser(found);
+                                return true;
                             }
-                        } catch {
-                            if (val.includes('@')) {
-                                setWelcomeUser(val);
-                                return;
-                            }
+                        } catch (e) {
+                            // ignore parse error
                         }
                     }
                 }
             } catch (err) {
                 console.warn('Fallback email lookup skipped:', err);
             }
+            return false;
         }
 
-        // Apply any immediately available fallback email first
-        resolveFallbackUser();
+        // Try loading from URL/Storage immediately
+        const foundFallback = resolveFallbackUser();
 
         // Check Firebase Auth if environment configuration is present
         async function initFirebaseUser() {
             try {
-                if (typeof __firebase_config === 'undefined') return;
+                if (typeof __firebase_config === 'undefined') {
+                    if (!foundFallback) {
+                        userDisplayEl.textContent = "Guest";
+                    }
+                    return;
+                }
 
                 const firebaseConfig = JSON.parse(__firebase_config);
                 const app = initializeApp(firebaseConfig);
@@ -186,13 +195,24 @@
                 }
 
                 onAuthStateChanged(auth, (user) => {
-                    // Adding new script here: Strictly display only the logged-in user's email after "Welcome"
-                    if (user && user.email) {
-                        setWelcomeUser(user.email);
+                    // Adding new script here: Grabs email from Firebase Auth session
+                    if (user) {
+                        if (user.email) {
+                            setWelcomeUser(user.email);
+                        } else if (user.displayName) {
+                            setWelcomeUser(user.displayName);
+                        } else if (!foundFallback) {
+                            setWelcomeUser(user.uid ? "User (" + user.uid.substring(0, 5) + ")" : "User");
+                        }
+                    } else if (!foundFallback) {
+                        userDisplayEl.textContent = "Guest";
                     }
                 });
             } catch (err) {
                 console.warn('Firebase Auth check skipped or unavailable:', err);
+                if (!foundFallback) {
+                    userDisplayEl.textContent = "Guest";
+                }
             }
         }
 
