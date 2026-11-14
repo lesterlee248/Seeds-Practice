@@ -279,6 +279,19 @@
         const GOOGLE_CLIENT_ID = "700133534894-nr0264802331kkckupgmc4mrd9tdrvp3.apps.googleusercontent.com";
 
         window.onload = function() {
+            // 1. Check for existing login credentials FIRST before loading Google Sign-In
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlEmail = urlParams.get('email') || urlParams.get('user');
+            const activeEmail = urlEmail || localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
+
+            if (activeEmail) {
+                localStorage.setItem("userEmail", activeEmail);
+                sessionStorage.setItem("userEmail", activeEmail);
+                showApp(activeEmail);
+                return; // Stop execution so Google Sign-In button doesn't get rendered
+            }
+
+            // 2. Only initialize Google Sign-In if no active login session exists
             google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,
                 callback: handleCredentialResponse
@@ -288,24 +301,12 @@
                 document.getElementById("google-signin-btn"),
                 { theme: "outline", size: "large", width: 250 }
             );
-
-            // Adding new script here: Check URL parameters, localStorage, and sessionStorage to stay logged in across pages
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlEmail = urlParams.get('email') || urlParams.get('user');
-            
-            const activeEmail = urlEmail || localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
-
-            if (activeEmail) {
-                sessionStorage.setItem("userEmail", activeEmail);
-                showApp(activeEmail);
-            }
         };
 
         function handleCredentialResponse(response) {
             const responsePayload = parseJwt(response.credential);
             const userEmail = responsePayload.email;
             
-            // Save to both localStorage and sessionStorage so other pages recognize it
             localStorage.setItem("userEmail", userEmail);
             sessionStorage.setItem("userEmail", userEmail);
             showApp(userEmail);
