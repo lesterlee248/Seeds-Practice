@@ -289,9 +289,15 @@
                 { theme: "outline", size: "large", width: 250 }
             );
 
-            const savedEmail = sessionStorage.getItem("userEmail");
-            if (savedEmail) {
-                showApp(savedEmail);
+            // Adding new script here: Check URL parameters, localStorage, and sessionStorage to stay logged in across pages
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlEmail = urlParams.get('email') || urlParams.get('user');
+            
+            const activeEmail = urlEmail || localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
+
+            if (activeEmail) {
+                sessionStorage.setItem("userEmail", activeEmail);
+                showApp(activeEmail);
             }
         };
 
@@ -299,6 +305,8 @@
             const responsePayload = parseJwt(response.credential);
             const userEmail = responsePayload.email;
             
+            // Save to both localStorage and sessionStorage so other pages recognize it
+            localStorage.setItem("userEmail", userEmail);
             sessionStorage.setItem("userEmail", userEmail);
             showApp(userEmail);
         }
@@ -321,6 +329,7 @@
         }
 
         function logout() {
+            localStorage.removeItem("userEmail");
             sessionStorage.removeItem("userEmail");
             window.userEmail = "";
             document.getElementById('form-container').classList.add('hidden');
