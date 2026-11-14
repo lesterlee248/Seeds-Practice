@@ -9,6 +9,7 @@
     <!-- Load Inter font for crisp, modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4 sm:p-6 antialiased selection:bg-emerald-500 selection:text-white">
 
     <!-- Main Centered Card Container -->
@@ -19,7 +20,8 @@
             <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/50">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
                 <p id="welcomeGreeting" class="text-sm sm:text-base font-semibold text-emerald-900 dark:text-emerald-200">
-                    Welcome, <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300">Gardener</span>
+                    <!-- Removed "Gardener" so it starts blank until the logged-in email loads -->
+                    Welcome <span id="userEmailDisplay" class="font-bold text-emerald-700 dark:text-emerald-300"></span>
                 </p>
             </div>
             <span class="text-xs font-medium text-slate-400 dark:text-slate-500">
@@ -120,50 +122,52 @@
         const userDisplayEl = document.getElementById('userEmailDisplay');
 
         /**
-         * Updates the welcome header with the resolved email or display name.
-         * @param {string} identifier
+         * Updates the welcome header with the resolved email.
+         * @param {string} email
          */
-        function setWelcomeUser(identifier) {
-            if (identifier && identifier.trim()) {
-                userDisplayEl.textContent = identifier.trim();
+        function setWelcomeUser(email) {
+            if (email && email.trim()) {
+                userDisplayEl.textContent = email.trim();
             }
         }
 
         /**
-         * Checks URL query parameters (?email=... or ?user=...) or common browser storage keys.
+         * Checks URL query parameters (?email=...) or browser storage keys for the logged-in email.
          */
         function resolveFallbackUser() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                const paramUser = params.get('email') || params.get('user') || params.get('name');
-                if (paramUser) {
-                    setWelcomeUser(paramUser);
+                const paramEmail = params.get('email') || params.get('user');
+                if (paramEmail) {
+                    setWelcomeUser(paramEmail);
                     return;
                 }
 
-                const storedKeys = ['userEmail', 'email', 'username', 'userName', 'currentUser'];
+                const storedKeys = ['userEmail', 'email', 'currentUser'];
                 for (const key of storedKeys) {
                     const val = window.localStorage?.getItem(key) || window.sessionStorage?.getItem(key);
                     if (val) {
                         try {
                             const parsed = JSON.parse(val);
-                            const extracted = parsed?.email || parsed?.displayName || parsed?.name || (typeof parsed === 'string' ? parsed : null);
-                            if (extracted) {
-                                setWelcomeUser(extracted);
+                            const extractedEmail = parsed?.email || (typeof parsed === 'string' && parsed.includes('@') ? parsed : null);
+                            if (extractedEmail) {
+                                setWelcomeUser(extractedEmail);
                                 return;
                             }
                         } catch {
-                            setWelcomeUser(val);
-                            return;
+                            if (val.includes('@')) {
+                                setWelcomeUser(val);
+                                return;
+                            }
                         }
                     }
                 }
             } catch (err) {
-                console.warn('Fallback user lookup skipped:', err);
+                console.warn('Fallback email lookup skipped:', err);
             }
         }
 
-        // Apply any immediately available fallback identity first
+        // Apply any immediately available fallback email first
         resolveFallbackUser();
 
         // Check Firebase Auth if environment configuration is present
@@ -182,11 +186,9 @@
                 }
 
                 onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        const label = user.email || user.displayName;
-                        if (label) {
-                            setWelcomeUser(label);
-                        }
+                    // Adding new script here: Strictly display only the logged-in user's email after "Welcome"
+                    if (user && user.email) {
+                        setWelcomeUser(user.email);
                     }
                 });
             } catch (err) {
