@@ -45,18 +45,19 @@
     </footer>
 
     <script>
-        if (localStorage.getItem('is_logged_in') === 'true' && localStorage.getItem('user_email')) {
-            window.location.href = "choose.html";
+        const savedEmail = localStorage.getItem('user_email');
+        if (localStorage.getItem('is_logged_in') === 'true' && savedEmail) {
+            window.location.href = `choose.html?email=${encodeURIComponent(savedEmail)}`;
         }
 
         function handleCredentialResponse(response) {
             try {
                 const payload = parseJwt(response.credential);
                 localStorage.setItem('user_email', payload.email);
-                localStorage.setItem('user_name', payload.name);
+                localStorage.setItem('user_name', payload.name || '');
                 localStorage.setItem('user_picture', payload.picture || '');
                 localStorage.setItem('is_logged_in', 'true');
-                window.location.href = "choose.html";
+                window.location.href = `choose.html?email=${encodeURIComponent(payload.email)}`;
             } catch (error) {
                 console.error("Authentication Error:", error);
                 alert("Failed to decode login token.");
