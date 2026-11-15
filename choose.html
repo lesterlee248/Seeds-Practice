@@ -52,7 +52,7 @@
                 </a>
 
                 <!-- View Card -->
-                <a href="view.html" class="group flex flex-col justify-between p-6 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 transition-all hover:-translate-y-1">
+                <a href="view.html" id="viewLink" class="group flex flex-col justify-between p-6 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 transition-all hover:-translate-y-1">
                     <div>
                         <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4 group-hover:scale-110 transition">
                             <i class="fa-solid fa-table-list text-lg"></i>
@@ -74,18 +74,21 @@
     </footer>
 
     <script>
-        const userEmail = localStorage.getItem('user_email');
-        if (!userEmail || localStorage.getItem('is_logged_in') !== 'true') {
-            window.location.href = "index.html";
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeEmail = urlParams.get('email') || localStorage.getItem('user_email') || '';
+
+        if (activeEmail) {
+            localStorage.setItem('user_email', activeEmail);
+            localStorage.setItem('is_logged_in', 'true');
+            document.getElementById('userEmailDisplay').textContent = activeEmail;
+            document.getElementById('addLink').href = `form.html?email=${encodeURIComponent(activeEmail)}`;
+            document.getElementById('viewLink').href = `view.html?email=${encodeURIComponent(activeEmail)}`;
         } else {
-            document.getElementById('userEmailDisplay').textContent = userEmail;
+            document.getElementById('userEmailDisplay').textContent = 'Guest';
         }
 
         function logout() {
-            localStorage.removeItem('user_email');
-            localStorage.removeItem('user_name');
-            localStorage.removeItem('user_picture');
-            localStorage.setItem('is_logged_in', 'false');
+            localStorage.clear();
             window.location.href = "index.html";
         }
     </script>
