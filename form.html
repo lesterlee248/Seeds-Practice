@@ -91,6 +91,17 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="date" class="block text-[11px] font-semibold text-slate-700 mb-1">Date</label>
+                        <input type="date" id="date" name="date" required class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="time" class="block text-[11px] font-semibold text-slate-700 mb-1">Time</label>
+                        <input type="time" id="time" name="time" required class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
                 <div>
                     <label for="record" class="block text-[11px] font-semibold text-slate-700 mb-1">Record the Practice</label>
                     <textarea id="record" name="record_practice_1" rows="3" required placeholder="Write down your session details or reflections..." class="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
@@ -141,11 +152,18 @@
             } else {
                 document.getElementById('user-email-display').textContent = 'Not signed in';
             }
+            setNowDateTime();
         };
 
         function logout() {
             localStorage.clear();
             window.location.href = "index.html";
+        }
+
+        function setNowDateTime() {
+            const now = new Date();
+            document.getElementById('date').value = now.toLocaleDateString('sv-SE');
+            document.getElementById('time').value = now.toTimeString().substring(0, 5);
         }
 
         function updateFileName(input) {
@@ -184,10 +202,6 @@
             }
 
             function sendData(fileObject) {
-                const now = new Date();
-                const autoDate = now.toLocaleDateString('sv-SE');
-                const autoTime = now.toTimeString().substring(0, 5);
-
                 const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
                                                .map(cb => cb.value)
                                                .join(', ');
@@ -196,8 +210,8 @@
                     userEmail: activeEmail || localStorage.getItem('user_email') || "",
                     practices: selectedPractices,
                     otherPractice: document.getElementById('other-practice').value.trim(),
-                    date: autoDate,
-                    time: autoTime,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
                     record: document.getElementById('record').value,
                     rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5',
                     file: fileObject
@@ -213,6 +227,7 @@
                     alert("Practice record submitted successfully!");
                     document.getElementById('practiceForm').reset();
                     updateFileName(fileInput);
+                    setNowDateTime();
                     submitBtn.textContent = "Submit Practice Record";
                     submitBtn.disabled = false;
                 })
