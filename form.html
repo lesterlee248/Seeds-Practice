@@ -23,55 +23,227 @@
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-4 py-8">
         <div class="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8">
             <div class="text-center mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Seeds Planting Portal</h2>
-                <p class="text-xs text-slate-500 mt-1">Record your daily spiritual, emotional, and practical growth seeds.</p>
+                <p class="text-sm text-slate-500 mt-1">Record your daily spiritual, emotional, and practical growth seeds.</p>
             </div>
 
-            <form id="practiceForm" class="space-y-4">
+            <form id="practiceForm" class="space-y-5">
+                <!-- Practices Section: Single column, larger font, all items visible -->
                 <div>
-                    <label class="block text-sm font-bold text-emerald-700 mb-2">What practice would you like to submit?</label>
-                    <div class="flex flex-col gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 max-h-64 overflow-y-auto">
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                    <label class="block text-base font-bold text-emerald-700 mb-3">What practice would you like to submit?</label>
+                    <div class="flex flex-col gap-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="3 Times Book" class="w-4 h-4 text-emerald-600 rounded"> 3 Times Book
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Gratitude" class="w-4 h-4 text-emerald-600 rounded"> Gratitude
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Rejoices" class="w-4 h-4 text-emerald-600 rounded"> Rejoices
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Coffee Celebration" class="w-4 h-4 text-emerald-600 rounded"> Coffee Celebration
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Pen Story" class="w-4 h-4 text-emerald-600 rounded"> Pen Story
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Moon and Lake Sadhana" class="w-4 h-4 text-emerald-600 rounded"> Moon and Lake Sadhana
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Meditation" class="w-4 h-4 text-emerald-600 rounded"> Meditation
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Yoga" class="w-4 h-4 text-emerald-600 rounded"> Yoga
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Job seeds" class="w-4 h-4 text-emerald-600 rounded"> Job seeds
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Relationship seeds" class="w-4 h-4 text-emerald-600 rounded"> Relationship seeds
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Money seeds" class="w-4 h-4 text-emerald-600 rounded"> Money seeds
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="Study / Learning" class="w-4 h-4 text-emerald-600 rounded"> Study / Learning
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
                             <input type="checkbox" name="practice" value="ACI 07" class="w-4 h-4 text-emerald-600 rounded"> ACI 07
                         </label>
-                        <label class="flex items-center gap-3 text-sm font-medium text-slate-700 cursor-pointer bg-white px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
-                            <input type="checkbox" name="practice" value="BDSW" class="w-4 h-4 text-emerald-60
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                            <input type="checkbox" name="practice" value="BDSW" class="w-4 h-4 text-emerald-600 rounded"> BDSW
+                        </label>
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                            <input type="checkbox" name="practice" value="Chanting" class="w-4 h-4 text-emerald-600 rounded"> Chanting
+                        </label>
+                        <label class="flex items-center gap-3 text-base font-medium text-slate-700 cursor-pointer bg-white px-4 py-2.5 rounded-lg border border-slate-200 hover:border-emerald-400 transition">
+                            <input type="checkbox" name="practice" value="以果为道" class="w-4 h-4 text-emerald-600 rounded"> 以果为道
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Other Practice -->
+                <div>
+                    <label for="other-practice" class="block text-sm font-semibold text-slate-700 mb-1">Other Practice:</label>
+                    <input type="text" id="other-practice" name="other_practice" placeholder="Specify other practice" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+
+                <!-- Date and Time -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="date" class="block text-sm font-semibold text-slate-700 mb-1">Date</label>
+                        <input type="date" id="date" name="date" required class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="time" class="block text-sm font-semibold text-slate-700 mb-1">Time</label>
+                        <input type="time" id="time" name="time" required class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Record the Practice -->
+                <div>
+                    <label for="record" class="block text-sm font-semibold text-slate-700 mb-1">Record the Practice</label>
+                    <textarea id="record" name="record_practice_1" rows="4" required placeholder="Write down your session details or reflections..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
+                </div>
+
+                <!-- Upload Document -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Upload Document (Optional, Max 50 MB)</label>
+                    <div class="border border-dashed border-emerald-400 bg-emerald-50/50 p-4 text-center rounded-xl cursor-pointer hover:bg-emerald-50 transition" onclick="document.getElementById('file-upload').click()">
+                        <span id="file-label" class="text-sm text-emerald-700 font-medium">Click to select document or image</span>
+                        <input type="file" id="file-upload" name="document_upload" accept=".docx,.doc,image/*,.pdf,.txt" style="display:none;" onchange="updateFileName(this)">
+                    </div>
+                </div>
+
+                <!-- Happiness Rating -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Rate your happy emotions for this moment:</label>
+                    <div class="flex justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <label class="flex flex-col items-center text-sm font-bold text-slate-600 cursor-pointer px-3 py-1">1 <input type="radio" name="happiness_rating" value="1" class="mt-1 w-4 h-4"></label>
+                        <label class="flex flex-col items-center text-sm font-bold text-slate-600 cursor-pointer px-3 py-1">2 <input type="radio" name="happiness_rating" value="2" class="mt-1 w-4 h-4"></label>
+                        <label class="flex flex-col items-center text-sm font-bold text-slate-600 cursor-pointer px-3 py-1">3 <input type="radio" name="happiness_rating" value="3" class="mt-1 w-4 h-4"></label>
+                        <label class="flex flex-col items-center text-sm font-bold text-slate-600 cursor-pointer px-3 py-1">4 <input type="radio" name="happiness_rating" value="4" class="mt-1 w-4 h-4"></label>
+                        <label class="flex flex-col items-center text-sm font-bold text-emerald-600 cursor-pointer px-3 py-1">5 <input type="radio" name="happiness_rating" value="5" checked class="mt-1 w-4 h-4"></label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md shadow-emerald-600/20">
+                    Submit Practice Record
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        Seeds Planting Portal &copy; 2026. All rights reserved.
+    </footer>
+
+    <script>
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydnhSIpLo1wLEe66mbTTaQDtKfTUexIj-A6OMSjSbInef70uw2rpy0msRHCf76Tc3SqQ/exec";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeEmail = urlParams.get('email') || localStorage.getItem('user_email') || '';
+
+        window.onload = function() {
+            if (activeEmail) {
+                localStorage.setItem('user_email', activeEmail);
+                localStorage.setItem('is_logged_in', 'true');
+                document.getElementById('user-email-display').textContent = activeEmail;
+                document.getElementById('backHubLink').href = `choose.html?email=${encodeURIComponent(activeEmail)}`;
+            } else {
+                document.getElementById('user-email-display').textContent = 'Not signed in';
+            }
+            setNowDateTime();
+        };
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        function setNowDateTime() {
+            const now = new Date();
+            document.getElementById('date').value = now.toLocaleDateString('sv-SE');
+            document.getElementById('time').value = now.toTimeString().substring(0, 5);
+        }
+
+        function updateFileName(input) {
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                label.textContent = "Selected: " + input.files[0].name;
+                label.style.color = "#059669";
+            } else {
+                label.textContent = "Click to select document or image";
+                label.style.color = "inherit";
+            }
+        }
+
+        document.getElementById('practiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const base64Data = evt.target.result.split(',')[1];
+                    sendData({
+                        fileName: file.name,
+                        mimeType: file.type || 'application/octet-stream',
+                        fileData: base64Data
+                    });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendData(null);
+            }
+
+            function sendData(fileObject) {
+                const selectedPractices = Array.from(document.querySelectorAll('input[name="practice"]:checked'))
+                                               .map(cb => cb.value)
+                                               .join(', ');
+
+                const formData = {
+                    userEmail: activeEmail || localStorage.getItem('user_email') || "",
+                    practices: selectedPractices,
+                    otherPractice: document.getElementById('other-practice').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    record: document.getElementById('record').value,
+                    rating: document.querySelector('input[name="happiness_rating"]:checked')?.value || '5',
+                    file: fileObject
+                };
+
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify(formData)
+                })
+                .then(() => {
+                    alert("Practice record submitted successfully!");
+                    document.getElementById('practiceForm').reset();
+                    updateFileName(fileInput);
+                    setNowDateTime();
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error("Error!", error);
+                    alert("Submission failed. Please try again.");
+                    submitBtn.textContent = "Submit Practice Record";
+                    submitBtn.disabled = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
