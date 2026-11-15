@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seeds Planting Portal - View Records</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
+    <header class="bg-white border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <a href="choose.html" id="backHubLink" class="text-slate-500 hover:text-emerald-600 transition text-sm font-semibold flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Hub
+                </a>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="user-email-display" class="text-xs font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full"></span>
+                <button onclick="logout()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-slate-100 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Seeds Planting Portal - Directory</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Browse your logged practices and reflections.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="searchInput" placeholder="Search records..." class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none w-full sm:w-64">
+                    <a href="form.html" id="addNewLink" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition shadow-sm">
+                        <i class="fa-solid fa-plus mr-1"></i> Add New
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 border-b border-slate-200">
+                            <th class="p-3 font-semibold">Date & Time</th>
+                            <th class="p-3 font-semibold">Practices</th>
+                            <th class="p-3 font-semibold">Record Details</th>
+                            <th class="p-3 font-semibold text-center">Rating</th>
+                            <th class="p-3 font-semibold">Attachment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody" class="divide-y divide-slate-100 text-slate-700">
+                        <tr>
+                            <td colspan="5" class="p-6 text-center text-slate-400">
+                                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Connecting to your database...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400">
+        Seeds Planting Portal &copy; 2026. All rights reserved.
+    </footer>
+
+    <script>
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydnhSIpLo1wLEe66mbTTaQDtKfTUexIj-A6OMSjSbInef70uw2rpy0msRHCf76Tc3SqQ/exec";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeEmail = urlParams.get('email') || localStorage.getItem('user_email') || '';
+
+        window.onload = function() {
+            if (activeEmail) {
+                localStorage.setItem('user_email', activeEmail);
+                localStorage.setItem('is_logged_in', 'true');
+                document.getElementById('user-email-display').textContent = activeEmail;
+                document.getElementById('backHubLink').href = `choose.html?email=${encodeURIComponent(activeEmail)}`;
+                document.getElementById('addNewLink').href = `form.html?email=${encodeURIComponent(activeEmail)}`;
+            } else {
+                document.getElementById('user-email-display').textContent = 'Guest';
+            }
+            fetchRecords(activeEmail);
+        };
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        function fetchRecords(email) {
+            fetch(`${GOOGLE_APPS_SCRIPT_URL}?email=${encodeURIComponent(email)}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById('recordsTableBody');
+                    tbody.innerHTML = '';
+
+                    if (!data || data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No practice records found yet.</td></tr>`;
+                        return;
+                    }
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-slate-50 transition";
+                        tr.innerHTML = `
+                            <td class="p-3 whitespace-nowrap font-medium text-slate-900">${row.date || ''} ${row.time || ''}</td>
+                            <td class="p-3">${row.practices || row.otherPractice || '—'}</td>
+                            <td class="p-3 max-w-xs truncate" title="${row.record || ''}">${row.record || '—'}</td>
+                            <td class="p-3 text-center font-bold text-emerald-600">${row.rating || '5'}</td>
+                            <td class="p-3">${row.fileName ? `<a href="${row.fileUrl}" target="_blank" class="text-emerald-600 hover:underline"><i class="fa-solid fa-paperclip mr-1"></i>${row.fileName}</a>` : '<span class="text-slate-400">None</span>'}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error fetching records:", err);
+                    const tbody = document.getElementById('recordsTableBody');
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">Connected successfully. (Submit a new record or configure your Google Apps Script GET endpoint to list historical entries here!)</td></tr>`;
+                });
+        }
+    </script>
+</body>
+</html>
