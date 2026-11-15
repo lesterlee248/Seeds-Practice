@@ -12,7 +12,7 @@
     <header class="bg-white border-b border-slate-200">
         <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <a href="choose.html" class="text-slate-500 hover:text-emerald-600 transition text-sm font-semibold flex items-center gap-1.5">
+                <a href="choose.html" id="backHubLink" class="text-slate-500 hover:text-emerald-600 transition text-sm font-semibold flex items-center gap-1.5">
                     <i class="fa-solid fa-arrow-left"></i> Back to Hub
                 </a>
             </div>
@@ -139,22 +139,23 @@
     <script>
         const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydnhSIpLo1wLEe66mbTTaQDtKfTUexIj-A6OMSjSbInef70uw2rpy0msRHCf76Tc3SqQ/exec";
 
-        window.onload = function() {
-            const activeEmail = localStorage.getItem('user_email');
-            if (!activeEmail || localStorage.getItem('is_logged_in') !== 'true') {
-                window.location.href = "index.html";
-                return;
-            }
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeEmail = urlParams.get('email') || localStorage.getItem('user_email') || '';
 
-            document.getElementById('user-email-display').textContent = activeEmail;
+        window.onload = function() {
+            if (activeEmail) {
+                localStorage.setItem('user_email', activeEmail);
+                localStorage.setItem('is_logged_in', 'true');
+                document.getElementById('user-email-display').textContent = activeEmail;
+                document.getElementById('backHubLink').href = `choose.html?email=${encodeURIComponent(activeEmail)}`;
+            } else {
+                document.getElementById('user-email-display').textContent = 'Not signed in';
+            }
             setNowDateTime();
         };
 
         function logout() {
-            localStorage.removeItem('user_email');
-            localStorage.removeItem('user_name');
-            localStorage.removeItem('user_picture');
-            localStorage.setItem('is_logged_in', 'false');
+            localStorage.clear();
             window.location.href = "index.html";
         }
 
@@ -205,7 +206,7 @@
                                                .join(', ');
 
                 const formData = {
-                    userEmail: localStorage.getItem('user_email') || "",
+                    userEmail: activeEmail || localStorage.getItem('user_email') || "",
                     practices: selectedPractices,
                     otherPractice: document.getElementById('other-practice').value,
                     date: document.getElementById('date').value,
