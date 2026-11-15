@@ -28,70 +28,79 @@
 
     <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6">
         <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-5 sm:p-6">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-5 pb-4 border-b border-slate-100 gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 pb-4 border-b border-slate-100 gap-4">
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900">Seeds Planting Portal - Data</h2>
+                    <h2 class="text-xl font-bold text-slate-900">Seeds Planting Portal - Directory</h2>
                     <p class="text-xs text-slate-500 mt-0.5">Browse and filter your logged practices and reflections.</p>
                 </div>
-
-                <!-- Filter & Search Controls -->
-                <div class="flex flex-wrap items-center justify-end gap-2">
-                    <!-- Practice Dropdown -->
-                    <select id="practiceFilter" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <option value="">All Practices</option>
-                        <option value="3 Times Book">3 Times Book</option>
-                        <option value="Gratitude">Gratitude</option>
-                        <option value="Rejoices">Rejoices</option>
-                        <option value="Coffee Celebration">Coffee Celebration</option>
-                        <option value="Pen Story">Pen Story</option>
-                        <option value="Moon and Lake Sadhana">Moon and Lake Sadhana</option>
-                        <option value="Meditation">Meditation</option>
-                        <option value="Yoga">Yoga</option>
-                        <option value="Job seeds">Job seeds</option>
-                        <option value="Relationship seeds">Relationship seeds</option>
-                        <option value="Money seeds">Money seeds</option>
-                        <option value="Study / Learning">Study / Learning</option>
-                        <option value="ACI 07">ACI 07</option>
-                        <option value="BDSW">BDSW</option>
-                        <option value="Chanting">Chanting</option>
-                        <option value="以果为道">以果为道</option>
-                    </select>
-
-                    <!-- Rating Dropdown -->
-                    <select id="ratingFilter" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        <option value="">All Ratings</option>
-                        <option value="5">Rating: 5</option>
-                        <option value="4">Rating: 4</option>
-                        <option value="3">Rating: 3</option>
-                        <option value="2">Rating: 2</option>
-                        <option value="1">Rating: 1</option>
-                    </select>
-
-                    <!-- Date Filter -->
-                    <input type="date" id="dateFilter" title="Filter by date" class="px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs bg-white text-slate-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-
-                    <!-- Search Bar -->
-                    <div class="relative w-full sm:w-48">
-                        <i class="fa-solid fa-magnifying-glass text-slate-400 text-[11px] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                        <input type="text" id="searchInput" placeholder="Search records..." class="pl-8 pr-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none w-full">
-                    </div>
-
-                    <!-- Clear Filters Button -->
-                    <button type="button" id="resetFiltersBtn" onclick="resetFilters()" class="hidden px-2.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-rose-600 transition">
-                        Reset
+                <div class="flex items-center justify-end gap-2 w-full sm:w-auto">
+                    <button type="button" id="resetFiltersBtn" onclick="resetFilters()" class="hidden px-2.5 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition whitespace-nowrap">
+                        <i class="fa-solid fa-xmark mr-1"></i>Clear Filters
                     </button>
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 text-[11px] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input type="text" id="searchInput" placeholder="Search all records..." class="pl-8 pr-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none w-full">
+                    </div>
                 </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-[11px]">
                     <thead>
+                        <!-- Column Titles -->
                         <tr class="bg-slate-50 text-slate-600 border-b border-slate-200">
-                            <th class="p-2.5 font-semibold">Date & Time</th>
-                            <th class="p-2.5 font-semibold">Practices</th>
-                            <th class="p-2.5 font-semibold">Record Details</th>
-                            <th class="p-2.5 font-semibold text-center">Rating</th>
-                            <th class="p-2.5 font-semibold">Attachment</th>
+                            <th class="px-2.5 pt-2.5 pb-1.5 font-semibold">Date & Time</th>
+                            <th class="px-2.5 pt-2.5 pb-1.5 font-semibold">Practices</th>
+                            <th class="px-2.5 pt-2.5 pb-1.5 font-semibold">Record Details</th>
+                            <th class="px-2.5 pt-2.5 pb-1.5 font-semibold text-center">Rating</th>
+                            <th class="px-2.5 pt-2.5 pb-1.5 font-semibold">Attachment</th>
+                        </tr>
+                        <!-- Inline Column Filters -->
+                        <tr class="bg-slate-50/70 border-b border-slate-200">
+                            <th class="px-2 pb-2 pt-1 font-normal">
+                                <input type="date" id="dateFilter" title="Filter by date" class="w-full px-2 py-1 border border-slate-200 rounded text-[11px] bg-white text-slate-700 focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                            </th>
+                            <th class="px-2 pb-2 pt-1 font-normal">
+                                <select id="practiceFilter" class="w-full px-2 py-1 border border-slate-200 rounded text-[11px] bg-white text-slate-700 focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                    <option value="">All Practices</option>
+                                    <option value="3 Times Book">3 Times Book</option>
+                                    <option value="Gratitude">Gratitude</option>
+                                    <option value="Rejoices">Rejoices</option>
+                                    <option value="Coffee Celebration">Coffee Celebration</option>
+                                    <option value="Pen Story">Pen Story</option>
+                                    <option value="Moon and Lake Sadhana">Moon and Lake Sadhana</option>
+                                    <option value="Meditation">Meditation</option>
+                                    <option value="Yoga">Yoga</option>
+                                    <option value="Job seeds">Job seeds</option>
+                                    <option value="Relationship seeds">Relationship seeds</option>
+                                    <option value="Money seeds">Money seeds</option>
+                                    <option value="Study / Learning">Study / Learning</option>
+                                    <option value="ACI 07">ACI 07</option>
+                                    <option value="BDSW">BDSW</option>
+                                    <option value="Chanting">Chanting</option>
+                                    <option value="以果为道">以果为道</option>
+                                </select>
+                            </th>
+                            <th class="px-2 pb-2 pt-1 font-normal">
+                                <input type="text" id="recordFilter" placeholder="Filter details..." class="w-full px-2 py-1 border border-slate-200 rounded text-[11px] bg-white text-slate-700 focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                            </th>
+                            <th class="px-2 pb-2 pt-1 font-normal">
+                                <select id="ratingFilter" class="w-full px-1.5 py-1 border border-slate-200 rounded text-[11px] bg-white text-slate-700 text-center focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                    <option value="">All</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </th>
+                            <th class="px-2 pb-2 pt-1 font-normal">
+                                <select id="attachmentFilter" class="w-full px-2 py-1 border border-slate-200 rounded text-[11px] bg-white text-slate-700 focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                    <option value="">All</option>
+                                    <option value="has">Has File</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="recordsTableBody" class="divide-y divide-slate-100 text-slate-700">
@@ -160,27 +169,35 @@
         }
 
         function applyFilters() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const selectedPractice = document.getElementById('practiceFilter').value.toLowerCase();
-            const selectedRating = document.getElementById('ratingFilter').value;
+            const globalQuery = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedDate = document.getElementById('dateFilter').value;
+            const selectedPractice = document.getElementById('practiceFilter').value.toLowerCase();
+            const recordQuery = document.getElementById('recordFilter').value.toLowerCase().trim();
+            const selectedRating = document.getElementById('ratingFilter').value;
+            const selectedAttachment = document.getElementById('attachmentFilter').value;
 
-            // Show "Reset" button whenever any filter is active
-            const hasActiveFilter = query || selectedPractice || selectedRating || selectedDate;
+            const hasActiveFilter = globalQuery || selectedDate || selectedPractice || recordQuery || selectedRating || selectedAttachment;
             document.getElementById('resetFiltersBtn').classList.toggle('hidden', !hasActiveFilter);
 
             const filtered = allRecords.filter(row => {
                 const combinedPractices = [row.practices, row.otherPractice].filter(Boolean).join(', ').toLowerCase();
-                const matchesSearch = !query ||
-                    (row.date || '').toLowerCase().includes(query) ||
-                    combinedPractices.includes(query) ||
-                    (row.record || '').toLowerCase().includes(query);
+                const recordText = (row.record || '').toLowerCase();
+                const hasFile = Boolean(row.fileName);
 
-                const matchesPractice = !selectedPractice || combinedPractices.includes(selectedPractice);
-                const matchesRating = !selectedRating || String(row.rating || '').trim() === selectedRating;
+                const matchesGlobal = !globalQuery ||
+                    (row.date || '').toLowerCase().includes(globalQuery) ||
+                    combinedPractices.includes(globalQuery) ||
+                    recordText.includes(globalQuery);
+
                 const matchesDate = !selectedDate || (row.date || '').trim() === selectedDate;
+                const matchesPractice = !selectedPractice || combinedPractices.includes(selectedPractice);
+                const matchesRecord = !recordQuery || recordText.includes(recordQuery);
+                const matchesRating = !selectedRating || String(row.rating || '').trim() === selectedRating;
+                const matchesAttachment = !selectedAttachment ||
+                    (selectedAttachment === 'has' && hasFile) ||
+                    (selectedAttachment === 'none' && !hasFile);
 
-                return matchesSearch && matchesPractice && matchesRating && matchesDate;
+                return matchesGlobal && matchesDate && matchesPractice && matchesRecord && matchesRating && matchesAttachment;
             });
 
             renderRecords(filtered);
@@ -188,16 +205,20 @@
 
         function resetFilters() {
             document.getElementById('searchInput').value = '';
-            document.getElementById('practiceFilter').value = '';
-            document.getElementById('ratingFilter').value = '';
             document.getElementById('dateFilter').value = '';
+            document.getElementById('practiceFilter').value = '';
+            document.getElementById('recordFilter').value = '';
+            document.getElementById('ratingFilter').value = '';
+            document.getElementById('attachmentFilter').value = '';
             applyFilters();
         }
 
         document.getElementById('searchInput').addEventListener('input', applyFilters);
-        document.getElementById('practiceFilter').addEventListener('change', applyFilters);
-        document.getElementById('ratingFilter').addEventListener('change', applyFilters);
         document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        document.getElementById('practiceFilter').addEventListener('change', applyFilters);
+        document.getElementById('recordFilter').addEventListener('input', applyFilters);
+        document.getElementById('ratingFilter').addEventListener('change', applyFilters);
+        document.getElementById('attachmentFilter').addEventListener('change', applyFilters);
 
         function fetchRecords(email) {
             const tbody = document.getElementById('recordsTableBody');
